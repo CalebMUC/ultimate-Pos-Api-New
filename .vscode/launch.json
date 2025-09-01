@@ -1,0 +1,50 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "build",
+         "type": "shell",
+         "command": "dotnet",
+         "args": [
+            "build",
+            "${workspaceFolder}/Ultimate POS Api.csproj"
+         ],
+         "group": {
+            "kind": "build",
+            "isDefault": true
+         },
+         "problemMatcher": "$msCompile",
+         "presentation": {
+            "reveal": "silent"
+         }
+      }
+   ],
+   "configurations": [
+      {
+         "name": "C#: <project-name> Debug",
+         "type": "dotnet",
+         "request": "launch",
+         "projectPath":  "${workspaceFolder}/Ultimate POS Api.csproj"
+      },
+      {
+         "name": "Attach to Chrome",
+         "port": 9222,
+         "request": "attach",
+         "type": "chrome",
+         "webRoot": "${workspaceFolder}"
+      },
+      {
+         "name": "C#: <project-name> Debug",
+         "type": "dotnet",
+         "request": "launch",
+         "projectPath":  "${workspaceFolder}/Ultimate POS Api.csproj"
+      },
+      {
+         "name": ".NET Core Attach",
+         "type": "coreclr",
+         "request": "attach"
+      }
+      
+
+   ]
+}

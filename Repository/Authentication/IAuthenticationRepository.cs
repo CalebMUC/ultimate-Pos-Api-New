@@ -1,0 +1,22 @@
+using System;
+using Ultimate_POS_Api.DTOS;
+using Ultimate_POS_Api.Models;
+
+namespace Ultimate_POS_Api.Repository.Authentication;
+
+
+public interface IAuthenticationRepository
+{
+    public Task<ResponseStatus> Register(Userdto register);
+
+    public Task<LoginResponseStatus> Login(UserInfo userInfo);
+
+    public Task<IEnumerable<Roles>> GetUserRole();
+
+    //public Task<ResponseStatus> AddRole(RoleDto userRole);
+
+    public Task<IEnumerable<User>> GetUsers();
+    //public Task<ResponseStatus> AddPermissions(RolePermissionDto rolePermissionDto);
+
+
+}

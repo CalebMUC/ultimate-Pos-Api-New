@@ -1,0 +1,6 @@
+@Ultimate_POS_Api_HostAddress = http://localhost:7231
+
+GET {{Ultimate_POS_Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
