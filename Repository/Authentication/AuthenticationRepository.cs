@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Ultimate_POS_Api.Data;
 using Ultimate_POS_Api.DTOS;
+using Ultimate_POS_Api.DTOS.Permissions;
+using Ultimate_POS_Api.DTOS.Roles;
 using Ultimate_POS_Api.Helper;
 using Ultimate_POS_Api.Models;
 
@@ -32,14 +34,21 @@ public class AuthenticationRepository : IAuthenticationRepository
 
     private readonly IAccountRepository _accountRepository;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<AuthenticationRepository> _logger;
 
-    public AuthenticationRepository(UltimateDBContext dbContext, IOptions<JwtSettings> jwtsettings, IConfiguration config, IHttpContextAccessor httpContextAccessor, IAccountRepository accountRepository)
+    public AuthenticationRepository(UltimateDBContext dbContext, 
+        IOptions<JwtSettings> jwtsettings, 
+        IConfiguration config,
+        IHttpContextAccessor httpContextAccessor,
+        IAccountRepository accountRepository,
+        ILogger<AuthenticationRepository> logger)
     {
         _dbContext = dbContext;
         _jwtSettings = jwtsettings.Value;
         _httpContextAccessor = httpContextAccessor;
         _config = config;
         _accountRepository = accountRepository;
+        _logger = logger;
     }
 
     //public async Task<ResponseStatus> Register(Userdto register)
@@ -293,6 +302,56 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
+
+    public async Task<IEnumerable<GetRolesDto>> GetRolesAsync()
+    {
+        try
+        {
+            var response = await _dbContext.Roles.Select(r => new GetRolesDto
+            {
+                RoleId = r.RoleId,
+                RoleName = r.RoleName,
+                Description = r.Description,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt,
+                CreatedBy = r.CreatedBy,
+                UpdatedBy = r.UpdatedBy,
+                IsSystemRole = r.IsSystemRole,
+                IsActive = r.IsActive,
+            }).ToListAsync();
+            return response;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in GetRolesAsync");
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<IEnumerable<GetPermissionDto>> GetPermissionsAsync()
+    {
+        try
+        {
+            var response = await _dbContext.Permission.Select(pm => new GetPermissionDto
+            {
+                PermissionId = pm.PermissionId,
+                PermissionName = pm.PermissionName,
+                Description = pm.Description,
+                Module = pm.Module,
+                CreatedAt = pm.CreatedAt,
+                UpdatedAt = pm.UpdatedAt,
+                IsActive = pm.IsActive,
+            }).ToListAsync();
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in GetPermissionsAsync");
+            throw new Exception(ex.Message);
+        }
+
+    }
 
 
     public string GenerateJwtToken(User user)

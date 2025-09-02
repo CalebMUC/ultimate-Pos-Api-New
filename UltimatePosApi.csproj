@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Ultimate_POS_Api</RootNamespace>
     <UserSecretsId>98e8ff4a-438b-4b78-ab2e-969326038d8d</UserSecretsId>
-    <!-- <DockerDefaultTargetOS>win</DockerDefaultTargetOS>
+    <!-- <DockerDefaultTargetOS>win</DockerDefaultTargetOS>a
     <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
     <!--<DockerDefaultTargetOS>linux</DockerDefaultTargetOS>
 <RuntimeIdentifier>linux-x64</RuntimeIdentifier>-->

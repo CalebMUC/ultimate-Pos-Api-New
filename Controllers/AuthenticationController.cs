@@ -88,6 +88,50 @@ namespace Ultimate_POS_Api.Controllers
             }
         }
 
+        [HttpPost("GetRoles")]
+        //[Authorize]
+        public async Task<ActionResult> GetRoles()
+        {
+            try
+            {
+                var response = await _service.GetRolesAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("GetPermissions")]
+        //[Authorize]
+        public async Task<ActionResult> GetPermissions()
+        {
+            try
+            {
+                var response = await _service.GetPermissionsAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[HttpPost("GetRolePermissions")]
+        //[Authorize]
+        //public async Task<ActionResult> GetRolePermissions()
+        //{
+        //    try
+        //    {
+        //        var response = await _service.GetRolePermissionsAsync();
+
+        //    }
+        //    catch ()
+        //    {
+        //    }
+        //}
+
         [HttpPost("GetUsers")]
         [Authorize]
         public async Task<IActionResult> GetUsersAsync([FromQuery] string? searchTerm)
