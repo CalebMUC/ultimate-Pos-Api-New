@@ -353,6 +353,28 @@ public class AuthenticationRepository : IAuthenticationRepository
 
     }
 
+    public async Task<IEnumerable<RolePermissionDto>> GetRolePermissionsAsync(RolePermissionRequest request)
+    {
+        try {
+            var response = await _dbContext.RolePermission.Where(rp => rp.RoleId == request.RoleId)
+               .GroupBy(rp => rp.RoleId)
+               .Select(g => new RolePermissionDto
+               {
+                   RoleId = g.Key,
+                   Permissions = g.Select(rp => rp.Permission.PermissionName).ToList()
+               }).ToListAsync();
+
+            return response;
+
+
+
+        }
+        catch (Exception ex) {
+            _logger.LogError(ex, "Error in GetRolePermissionsAsync");
+            throw new Exception(ex.Message);
+        }
+    }
+
 
     public string GenerateJwtToken(User user)
     {

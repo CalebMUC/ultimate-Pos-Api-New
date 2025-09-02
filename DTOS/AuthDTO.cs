@@ -56,27 +56,27 @@ namespace Ultimate_POS_Api.DTOS
         // public string UpdatedBy { get; set; } = string.Empty;
     }
 
-    public class RolePermissionDto
-    {
-        // public Guid RoleBaseId { get; set; }
+    //public class RolePermissionDto
+    //{
+    //    // public Guid RoleBaseId { get; set; }
 
-        public int RoleId { get; set; }
+    //    public int RoleId { get; set; }
 
-        public string ModuleName { get; set; }
+    //    public string ModuleName { get; set; }
 
-        // public List<SubmoduleListDto> Submodules { get; set; }
-        public List<SubmoduleListDto> Submodules { get; set; } = new List<SubmoduleListDto>();
+    //    // public List<SubmoduleListDto> Submodules { get; set; }
+    //    public List<SubmoduleListDto> Submodules { get; set; } = new List<SubmoduleListDto>();
 
-        //public DateTime CreatedAt { get; set; }
+    //    //public DateTime CreatedAt { get; set; }
 
-        //public DateTime CreatedOn { get; set; }
+    //    //public DateTime CreatedOn { get; set; }
 
-        //public DateTime UpdatedOn { get; set; }
+    //    //public DateTime UpdatedOn { get; set; }
 
-        //public string CreatedBy { get; set; }
+    //    //public string CreatedBy { get; set; }
 
-        //public string UpdatedBy { get; set; }
-    }
+    //    //public string UpdatedBy { get; set; }
+    //}
 
     public class SubmoduleListDto
     {

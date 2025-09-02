@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Ultimate_POS_Api.Data;
 using Ultimate_POS_Api.DTOS;
+using Ultimate_POS_Api.DTOS.Permissions;
 using Ultimate_POS_Api.Helper;
 using Ultimate_POS_Api.Models;
 using Ultimate_POS_Api.ReportMapping;
@@ -118,19 +119,22 @@ namespace Ultimate_POS_Api.Controllers
             }
         }
 
-        //[HttpPost("GetRolePermissions")]
+        [HttpPost("GetRolePermissions")]
         //[Authorize]
-        //public async Task<ActionResult> GetRolePermissions()
-        //{
-        //    try
-        //    {
-        //        var response = await _service.GetRolePermissionsAsync();
+        public async Task<ActionResult> GetRolePermissions(RolePermissionRequest request)
+        {
+            try
+            {
+                var response = await _service.GetRolePermissionsAsync(request);
 
-        //    }
-        //    catch ()
-        //    {
-        //    }
-        //}
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("GetUsers")]
         [Authorize]
