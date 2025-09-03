@@ -136,6 +136,23 @@ namespace Ultimate_POS_Api.Controllers
             }
         }
 
+        [HttpPost("GetPermissionsModules")]
+        //[Authorize]
+        public async Task<ActionResult> GetPermissionsModules()
+        {
+            try
+            {
+                var response = await _service.GetPermissionsModulesAsync();
+
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("GetUsers")]
         [Authorize]
         public async Task<IActionResult> GetUsersAsync([FromQuery] string? searchTerm)

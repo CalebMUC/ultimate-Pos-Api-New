@@ -376,6 +376,30 @@ public class AuthenticationRepository : IAuthenticationRepository
     }
 
 
+    public async Task<IEnumerable<PermissionModules>> GetPermissionsModulesAsync()
+    {
+        try
+        {
+            var response = await _dbContext.Permission
+               .GroupBy(p => p.Module )
+               .Select(g => new PermissionModules
+               {
+                    Module= g.Key,
+                   Permissions = g.Select(p => p.PermissionName).ToList()
+               }).ToListAsync();
+
+            return response;
+
+
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in GetPermissionsModulesAsync");
+            throw new Exception(ex.Message);
+        }
+    }
+
     public string GenerateJwtToken(User user)
     {
         //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
