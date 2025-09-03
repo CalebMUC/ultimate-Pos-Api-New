@@ -431,6 +431,54 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
+    public async Task<ResponseStatus> SaveRolePermissionsAsync(SaveRolePermissionsDto dto)
+    {
+        try
+        {
+            // ✅ Load role including existing permissions
+            var role = await _dbContext.Roles
+                .Include(r => r.Permissions)
+                .FirstOrDefaultAsync(r => r.RoleId == dto.RoleId);
+
+            if (role == null)
+            {
+                return new ResponseStatus
+                {
+                    Status = 404,
+                    StatusMessage = "Role not found"
+                };
+            }
+
+            // ✅ Remove old permissions
+            _dbContext.RolePermission.RemoveRange(role.Permissions);
+
+            // ✅ Add new permissions
+            var newRolePermissions = dto.Permissions.Select(permId => new RolePermissions
+            {
+                RoleId = dto.RoleId,
+                PermissionId = permId,
+                GrantedBy = "System",
+                GrantedAt = DateTime.UtcNow
+            });
+
+            await _dbContext.RolePermission.AddRangeAsync(newRolePermissions);
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ResponseStatus
+            {
+                Status = 200,
+                StatusMessage = "Permissions updated successfully"
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error saving role permissions");
+            throw;
+        }
+    }
+
+
     public string GenerateJwtToken(User user)
     {
         //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

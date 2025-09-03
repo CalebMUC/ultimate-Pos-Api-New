@@ -22,6 +22,7 @@ public interface IAuthenticationRepository
     public Task<IEnumerable<GetPermissionDto>> GetPermissionsAsync();
     public Task<IEnumerable<PermissionModules>> GetPermissionsModulesAsync();
     public Task<IEnumerable<RolePermissionDto>> GetRolePermissionsAsync(RolePermissionRequest request);
+    public Task<ResponseStatus> SaveRolePermissionsAsync(SaveRolePermissionsDto dto);
     //public Task<ResponseStatus> AddPermissions(RolePermissionDto rolePermissionDto);
 
 

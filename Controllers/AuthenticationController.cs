@@ -27,13 +27,16 @@ namespace Ultimate_POS_Api.Controllers
     {
         private readonly IAuthenticationRepository _service;
         private readonly UltimateDBContext _Context;
+        private readonly ILogger<AuthenticationController> _logger;
 
 
-        public AuthenticationController(IAuthenticationRepository services, UltimateDBContext ultimateDB)
+        public AuthenticationController(IAuthenticationRepository services, 
+            UltimateDBContext ultimateDB,
+            ILogger<AuthenticationController> logger)
         {
             _service = services;
             _Context = ultimateDB;
-
+            _logger = logger;
         }
 
         [HttpPost("Login")]
@@ -192,6 +195,26 @@ namespace Ultimate_POS_Api.Controllers
                 });
             }
         }
+
+        [HttpPost("SaveRolePermissions")]
+        public async Task<ActionResult<ResponseStatus>> SaveRolePermissions([FromBody] SaveRolePermissionsDto dto)
+        {
+            try
+            {
+                var response = await _service.SaveRolePermissionsAsync(dto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in SaveRolePermissions endpoint");
+                return StatusCode(500, new ResponseStatus
+                {
+                    Status = 500,
+                    StatusMessage = ex.Message
+                });
+            }
+        }
+
 
 
         [HttpPost("AddPermissions")]
