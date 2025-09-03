@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using Ultimate_POS_Api.Data;
 using Ultimate_POS_Api.DTOS;
 using Ultimate_POS_Api.DTOS.Permissions;
+using Ultimate_POS_Api.DTOS.Roles;
 using Ultimate_POS_Api.Helper;
 using Ultimate_POS_Api.Models;
 using Ultimate_POS_Api.ReportMapping;
@@ -72,22 +73,22 @@ namespace Ultimate_POS_Api.Controllers
         }
 
 
-        [HttpPost("AddRole")]
-        // [Authorize]
-        public async Task<ActionResult> AddRole(RoleDto userRole)
-        {
-            try
-            {
-                //var response = await _service.AddRole(userRole);
+        //[HttpPost("AddRole")]
+        //// [Authorize]
+        //public async Task<ActionResult> AddRole(RoleDto userRole)
+        //{
+        //    try
+        //    {
+        //        //var response = await _service.AddRole(userRole);
 
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpPost("GetRoles")]
         //[Authorize]
@@ -174,6 +175,24 @@ namespace Ultimate_POS_Api.Controllers
 
             return Ok(response);
         }
+        [HttpPost("AddRole")]
+        public async Task<ActionResult<ResponseStatus>> AddRole([FromBody] AddRoleDto addRole)
+        {
+            try
+            {
+                var response = await _service.AddRolesAsync(addRole);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseStatus
+                {
+                    Status = 400,
+                    StatusMessage = ex.Message
+                });
+            }
+        }
+
 
         [HttpPost("AddPermissions")]
         [Authorize]

@@ -400,6 +400,37 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
+    public async Task<ResponseStatus> AddRolesAsync(AddRoleDto addRole)
+    {
+        try {
+            var newRole = new Roles
+            {
+                RoleName = addRole.RoleName,
+                Description = addRole.Description,
+                CreatedBy = addRole.CreatedBy,
+                IsActive = addRole.IsActive,
+                CreatedAt = DateTime.UtcNow,
+                IsSystemRole = false,
+                UpdatedAt = DateTime.UtcNow,
+                UpdatedBy = addRole.CreatedBy
+            };
+
+            await _dbContext.AddAsync(newRole);
+            await _dbContext.SaveChangesAsync();
+
+            return new ResponseStatus
+            {
+                Status = 200,
+                StatusMessage = "Role Added Successfully"
+            };
+
+        }
+        catch (Exception ex) {
+            _logger.LogError(ex, "Error Adding Roles");
+            throw new Exception(ex.Message);
+        }
+    }
+
     public string GenerateJwtToken(User user)
     {
         //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

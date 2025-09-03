@@ -15,7 +15,7 @@ public interface IAuthenticationRepository
 
     public Task<IEnumerable<Roles>> GetUserRole();
 
-    //public Task<ResponseStatus> AddRole(RoleDto userRole);
+    public Task<ResponseStatus> AddRolesAsync(AddRoleDto addRole);
 
     public Task<IEnumerable<User>> GetUsers();
     public Task<IEnumerable<GetRolesDto>> GetRolesAsync();
