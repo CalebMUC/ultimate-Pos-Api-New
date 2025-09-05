@@ -158,7 +158,7 @@ namespace Ultimate_POS_Api.Controllers
         }
 
         [HttpPost("GetUsers")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetUsersAsync([FromQuery] string? searchTerm)
         {
             var response = await _service.GetUsers();

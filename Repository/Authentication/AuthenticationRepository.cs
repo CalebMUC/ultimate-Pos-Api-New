@@ -18,6 +18,7 @@ using Ultimate_POS_Api.Data;
 using Ultimate_POS_Api.DTOS;
 using Ultimate_POS_Api.DTOS.Permissions;
 using Ultimate_POS_Api.DTOS.Roles;
+using Ultimate_POS_Api.DTOS.Users;
 using Ultimate_POS_Api.Helper;
 using Ultimate_POS_Api.Models;
 
@@ -593,9 +594,25 @@ public class AuthenticationRepository : IAuthenticationRepository
         return response;
     }
 
-    public async Task<IEnumerable<User>> GetUsers() //Guid clientid 
+    public async Task<IEnumerable<GetUsersDto>> GetUsers()
     {
-        var response = await _dbContext.Users.ToListAsync();
+        var response = await _dbContext.Users
+            .Include(u => u.Role)
+            .Select(user => new GetUsersDto
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                RoleId = user.RoleId,
+                RoleName = user.Role.RoleName, // ✅ direct from navigation
+                UpdatedBy = user.UpdatedBy,
+                UpdatedOn = user.UpdatedOn,
+                CreatedBy = user.CreatedBy,
+                CreatedOn = user.CreatedOn,
+            })
+            .ToListAsync();
+
         return response;
     }
 

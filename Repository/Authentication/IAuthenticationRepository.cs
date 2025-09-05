@@ -2,6 +2,7 @@ using System;
 using Ultimate_POS_Api.DTOS;
 using Ultimate_POS_Api.DTOS.Permissions;
 using Ultimate_POS_Api.DTOS.Roles;
+using Ultimate_POS_Api.DTOS.Users;
 using Ultimate_POS_Api.Models;
 
 namespace Ultimate_POS_Api.Repository.Authentication;
@@ -17,7 +18,7 @@ public interface IAuthenticationRepository
 
     public Task<ResponseStatus> AddRolesAsync(AddRoleDto addRole);
 
-    public Task<IEnumerable<User>> GetUsers();
+    public Task<IEnumerable<GetUsersDto>> GetUsers();
     public Task<IEnumerable<GetRolesDto>> GetRolesAsync();
     public Task<IEnumerable<GetPermissionDto>> GetPermissionsAsync();
     public Task<IEnumerable<PermissionModules>> GetPermissionsModulesAsync();
