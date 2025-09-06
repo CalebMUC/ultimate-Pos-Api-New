@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Ultimate_POS_Api.Repository.Authentication;
+using Ultimate_POS_Api.Repository.TillRepo;
 
 namespace Ultimate_POS_Api.Helper
 {
@@ -36,6 +37,7 @@ namespace Ultimate_POS_Api.Helper
             services.AddScoped<IDocumentRepository, DocumentsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICommonRepository, CommonRepository>();
+            services.AddScoped<ITillRepository, TillRepository>();
 
 
             services.AddScoped<DocumentService>();

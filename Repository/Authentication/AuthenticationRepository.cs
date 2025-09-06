@@ -606,6 +606,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Email = user.Email,
                 RoleId = user.RoleId,
                 RoleName = user.Role.RoleName, // ✅ direct from navigation
+         
                 UpdatedBy = user.UpdatedBy,
                 UpdatedOn = user.UpdatedOn,
                 CreatedBy = user.CreatedBy,

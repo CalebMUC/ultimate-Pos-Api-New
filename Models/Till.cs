@@ -8,35 +8,35 @@ namespace Ultimate_POS_Api.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TillId { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public Guid UserId { get; set; }
-        public string Description { get; set; }
-        [Required]
+
+        public string? Name { get; set; }
+        public Guid? UserId { get; set; }
+        public string? Description { get; set; }
+
         [Column(TypeName = "numeric(18,2)")]
-        public decimal OpeningAmount { get; set; }
-        [Required]
+        public decimal? OpeningAmount { get; set; }
+
         [Column(TypeName = "numeric(18,2)")]
-        public decimal ClosingAmount { get; set; }
-        [Required]
+        public decimal? ClosingAmount { get; set; }
+
         [Column(TypeName = "numeric(18,2)")]
-        public decimal CurrentAmount { get; set; }
-        [Required]
+        public decimal? CurrentAmount { get; set; }
+
         [Column(TypeName = "numeric(18,2)")]
-        public decimal ExpectedAmount { get; set; }
-        [Required]
+        public decimal? ExpectedAmount { get; set; }
+
         [Column(TypeName = "numeric(18,2)")]
-        public decimal Variance { get; set; }
-        public string Status { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public string UpdatesBy { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public string SupervisedBy { get; set; }
-        public DateTime SupervisedOn { get; set; }
+        public decimal? Variance { get; set; }
+
+        public string? Status { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? SupervisedBy { get; set; }
+        public DateTime? SupervisedOn { get; set; }
 
         // Navigation property (Cashier / User operating this till)
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

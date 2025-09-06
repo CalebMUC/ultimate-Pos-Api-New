@@ -1,4 +1,4 @@
-﻿namespace Ultimate_POS_Api.DTOS.Permissions
+﻿namespace Ultimate_POS_Api.DTOS.Permissions 
 {
     public class SaveRolePermissionsDto
     {
