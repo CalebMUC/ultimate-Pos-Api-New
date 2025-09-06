@@ -338,3 +338,5 @@ docker-compose.override.yml
 
 # macOS
 .DS_Store
+#migrations
+Migrations/
