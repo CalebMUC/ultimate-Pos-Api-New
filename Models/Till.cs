@@ -32,6 +32,8 @@ namespace Ultimate_POS_Api.Models
         public string? CreatedBy { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string? UpdatedBy { get; set; }
+        public string? OpenedBy { get; set; }
+        public DateTime? OpenedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? SupervisedBy { get; set; }
         public DateTime? SupervisedOn { get; set; }

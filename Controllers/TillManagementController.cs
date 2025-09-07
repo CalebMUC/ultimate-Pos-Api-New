@@ -45,9 +45,17 @@ namespace Ultimate_POS_Api.Controllers
         {
             return Ok();
         }
-        public async Task<ActionResult> OpenTill()
+        [HttpPost("OpenTill")]
+        public async Task<ActionResult> OpenTill([FromBody]OpenTillDto openTillDto)
         {
-            return Ok();
+            try
+            {
+                var response = await _tillRepository.OpenTillAsync(openTillDto);
+                return Ok(response);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
         }
         public async Task<ActionResult> CloseTill()
         {
