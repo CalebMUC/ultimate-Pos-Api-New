@@ -617,6 +617,30 @@ public class AuthenticationRepository : IAuthenticationRepository
         return response;
     }
 
+    public async Task<IEnumerable<GetUsersDto>> GetCashiersAsync()
+    {
+        var response = await _dbContext.Users
+            .Include(u => u.Role)
+            .Where(u => u.Role.RoleName == "Cashier") // ✅ filter only Cashiers
+            .Select(user => new GetUsersDto
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                RoleId = user.RoleId,
+                RoleName = user.Role.RoleName, // ✅ direct from navigation
+                UpdatedBy = user.UpdatedBy,
+                UpdatedOn = user.UpdatedOn,
+                CreatedBy = user.CreatedBy,
+                CreatedOn = user.CreatedOn,
+            })
+            .ToListAsync();
+
+        return response;
+    }
+
+
     private int GetAccessLevel(string roleName)
     {
         return roleName switch

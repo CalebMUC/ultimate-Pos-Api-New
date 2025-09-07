@@ -265,6 +265,84 @@ namespace Ultimate_POS_Api.Repository.TillRepo
             }
         }
 
+        public async Task<ResponseStatus> SubmitTillClosureAsync(TillClosureDto dto)
+        {
+            var till = await _dbContext.tills.FindAsync(dto.TillId);
+            if (till == null) return new ResponseStatus { Status = 404, StatusMessage = "Till not found" };
+
+            if (till.Status != "Open")
+                return new ResponseStatus { Status = 400, StatusMessage = "Till must be open to close" };
+
+
+            till.ClosingAmount = dto.ClosingAmount;
+            till.CurrentAmount = dto.ClosingAmount;
+            //till.Variance = dto.ClosingAmount - till.ExpectedAmount;
+            till.Variance = dto.Variance;
+            till.Status = "PendingSupervision";
+            till.UpdatedBy = dto.ClosedBy;
+            till.UpdatedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ResponseStatus { Status = 200, StatusMessage = "Till sent for supervision" };
+        }
+
+        // Supervisor gets tills under review
+        public async Task<IEnumerable<GetTillDto>> GetTillsUnderReviewAsync()
+        {
+            return await _dbContext.tills
+                .Where(t => t.Status == "PendingSupervision")
+                .Select(t=>new GetTillDto {
+                    TillId = t.TillId,
+                    Name = t.Name,
+                    UserId = t.UserId,
+                    Description = t.Description,
+                    Status = t.Status,
+                    OpeningAmount = t.OpeningAmount,
+                    CurrentAmount = t.CurrentAmount,
+                    ExpectedAmount = t.ExpectedAmount,
+                    CreatedAt = t.CreatedAt,
+                    CreatedBy = t.CreatedBy,
+                    OpenedAt = t.OpenedAt,
+                    OpenedBy = t.OpenedBy,
+                    ClosingAmount = t.ClosingAmount,
+                    UpdatedAt = t.UpdatedAt,
+                    UpdatedBy = t.UpdatedBy,
+                    SupervisedBy = t.SupervisedBy,
+                    SupervisedOn = t.SupervisedOn,
+                    Variance = t.Variance
+                })
+                .ToListAsync();
+        }
+
+        // Supervisor approves/rejects till
+        public async Task<ResponseStatus> SuperviseTillAsync(ApproveTillDto dto)
+        {
+            var till = await _dbContext.tills.FindAsync(dto.TillId);
+            if (till == null) return new ResponseStatus { Status = 404, StatusMessage = "Till not found" };
+
+            if (till.Status != "PendingSupervision")
+                return new ResponseStatus { Status = 400, StatusMessage = "Till not pending supervision" };
+
+            if (dto.Approved)
+            {
+                till.Status = "Closed";
+                till.SupervisedBy = dto.Supervisor;
+                till.SupervisedOn = DateTime.UtcNow;
+            }
+            else
+            {
+                till.Status = "Rejected"; // You can decide business rule here
+            }
+
+            till.UpdatedBy = dto.Supervisor;
+            till.UpdatedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ResponseStatus { Status = 200, StatusMessage = $"Till {till.Status}" };
+        }
+
         public void updateTillFromDto(UpdateTillDto dto, Till till) {
             till.Name = dto.Name;
             till.Description = dto.Description;

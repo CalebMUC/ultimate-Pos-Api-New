@@ -19,6 +19,7 @@ public interface IAuthenticationRepository
     public Task<ResponseStatus> AddRolesAsync(AddRoleDto addRole);
 
     public Task<IEnumerable<GetUsersDto>> GetUsers();
+    public Task<IEnumerable<GetUsersDto>> GetCashiersAsync();
     public Task<IEnumerable<GetRolesDto>> GetRolesAsync();
     public Task<IEnumerable<GetPermissionDto>> GetPermissionsAsync();
     public Task<IEnumerable<PermissionModules>> GetPermissionsModulesAsync();

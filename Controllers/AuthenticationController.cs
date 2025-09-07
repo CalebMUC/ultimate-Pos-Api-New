@@ -178,6 +178,18 @@ namespace Ultimate_POS_Api.Controllers
 
             return Ok(response);
         }
+        [HttpPost("GetCashiers")]
+        public async Task<IActionResult> GetCashiers()
+        {
+            try {
+                var response = await _service.GetCashiersAsync();
+                return Ok(response);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("AddRole")]
         public async Task<ActionResult<ResponseStatus>> AddRole([FromBody] AddRoleDto addRole)
         {

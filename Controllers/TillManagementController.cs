@@ -15,7 +15,7 @@ namespace Ultimate_POS_Api.Controllers
             _logger = logger;
 
         }
-        [HttpPost("AddTill")]
+        [HttpPost("Add-Till")]
         public async Task<ActionResult> AddTill([FromBody]AddTillDto addTill)
         {
             try
@@ -29,7 +29,7 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("UpdateTill")]
+        [HttpPost("Update-Till")]
         public async Task<ActionResult> UpdateTill()
         {
             try
@@ -57,7 +57,7 @@ namespace Ultimate_POS_Api.Controllers
 
             }
         }
-        [HttpPost("GetTill")]
+        [HttpPost("Get-Till")]
         public async Task<ActionResult> GetTill()
         {
             try
@@ -70,7 +70,7 @@ namespace Ultimate_POS_Api.Controllers
             }
             
         }
-        [HttpPost("AssignTill")]
+        [HttpPost("Assign-Till")]
         public async Task<ActionResult> AssignTill([FromBody]AssignTillDto assignTillDto)
         {
             try
@@ -83,7 +83,7 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("OpenTill")]
+        [HttpPost("Open-Till")]
         public async Task<ActionResult> OpenTill([FromBody]OpenTillDto openTillDto)
         {
             try
@@ -95,7 +95,46 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("CloseTill")]
+        [HttpPost("submit-closure")]
+        public async Task<IActionResult> SubmitClosure([FromBody] TillClosureDto dto)
+        {
+            try
+            {
+                var response = await _tillRepository.SubmitTillClosureAsync(dto);
+                return Ok(response);
+       }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+
+            }
+        }
+        [HttpPost("supervise-till")]
+        public async Task<IActionResult> SuperviseTill([FromBody] ApproveTillDto dto)
+        {
+            try
+            {
+                var response = await _tillRepository.SuperviseTillAsync(dto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("Get-Tills-Under-Review")]
+        public async Task<ActionResult> GetTillsUnderReview()
+        {
+            try
+            {
+                var response = await _tillRepository.GetTillsUnderReviewAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("Close-Till")]
         public async Task<ActionResult> CloseTill(CloseTillDto closeTillDto)
         {
             try {
