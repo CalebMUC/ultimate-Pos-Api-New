@@ -23,6 +23,7 @@ namespace Ultimate_POS_Api.Repository.TillRepo
                 {
                     TillId = t.TillId,
                     Name = t.Name,
+                    UserId = t.UserId,
                     Description = t.Description,
                     Status = t.Status,
                     OpeningAmount = t.OpeningAmount,
@@ -192,6 +193,75 @@ namespace Ultimate_POS_Api.Repository.TillRepo
                     StatusMessage = ex.Message
                 };
 
+            }
+        }
+        public async Task<ResponseStatus> CloseTillAsync(CloseTillDto closeTillDto)
+        {
+            try
+            {
+                var till = await _dbContext.tills.FindAsync(closeTillDto.TillId);
+                if (till == null)
+                {
+                    return new ResponseStatus
+                    {
+                        Status = 400,
+                        StatusMessage = "Till with the Provided Id Doesnt Exist"
+                    };
+                }
+                till.ClosingAmount = closeTillDto.ClosingAmount;
+                till.CurrentAmount = closeTillDto.ClosingAmount;
+                till.Variance = closeTillDto.ClosingAmount - till.ExpectedAmount;
+                till.Status = "Closed";
+                till.UpdatedBy = closeTillDto.ClosedBy;
+                await _dbContext.SaveChangesAsync();
+                return new ResponseStatus
+                {
+                    Status = 200,
+                    StatusMessage = "Till Closed SuccessFully"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error Closing Till", ex);
+                return new ResponseStatus
+                {
+                    Status = 500,
+                    StatusMessage = ex.Message
+                };
+            }
+        }
+
+        public async Task<ResponseStatus> AssignTillAsync(AssignTillDto assignTillDto)
+        {
+            try
+            {
+                var till = await _dbContext.tills.FindAsync(assignTillDto.TillId);
+                if (till == null)
+                {
+                    return new ResponseStatus
+                    {
+                        Status = 400,
+                        StatusMessage = "Till with the Provided Id Doesnt Exist"
+                    };
+                }
+                till.UserId = assignTillDto.UserId;
+                till.UpdatedBy = assignTillDto.AssignedBy;
+                till.UpdatedAt = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+                return new ResponseStatus
+                {
+                    Status = 200,
+                    StatusMessage = "Till Assigned SuccessFully"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error Assigning Till", ex);
+                return new ResponseStatus
+                {
+                    Status = 500,
+                    StatusMessage = ex.Message
+                };
             }
         }
 

@@ -49,7 +49,7 @@ namespace Ultimate_POS_Api.Controllers
             try
             {
                 var response = await _tillRepository.DeleteTillAsync(TillId);
-                return Ok();
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -70,9 +70,18 @@ namespace Ultimate_POS_Api.Controllers
             }
             
         }
-        public async Task<ActionResult> AssignTill()
+        [HttpPost("AssignTill")]
+        public async Task<ActionResult> AssignTill([FromBody]AssignTillDto assignTillDto)
         {
-            return Ok();
+            try
+            {
+                var response = await _tillRepository.AssignTillAsync(assignTillDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPost("OpenTill")]
         public async Task<ActionResult> OpenTill([FromBody]OpenTillDto openTillDto)
@@ -86,9 +95,18 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        public async Task<ActionResult> CloseTill()
+        [HttpPost("CloseTill")]
+        public async Task<ActionResult> CloseTill(CloseTillDto closeTillDto)
         {
-            return Ok();
+            try {
+                var response = await _tillRepository.CloseTillAsync(closeTillDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
     }

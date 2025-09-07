@@ -73,7 +73,7 @@ namespace Ultimate_POS_Api.Data
             modelBuilder.Entity<RolePermissions>()
                 .HasOne(rp => rp.Permission)
                 .WithMany(p => p.RolePermissions)
-                .HasForeignKey(rp => rp.PermissionId)
+                .HasForeignKey(rp => rp.PermissionId) 
                 .OnDelete(DeleteBehavior.Cascade);
 
             //prevent duplicate role-permission combinations
@@ -96,6 +96,8 @@ namespace Ultimate_POS_Api.Data
             modelBuilder.Entity<UserRoles>()
               .HasIndex(ur => new { ur.UserId, ur.RoleId })
               .IsUnique();
+
+            modelBuilder.Entity<Till>().HasQueryFilter(t => !t.IsDeleted);
 
             modelBuilder.Entity<Till>()
                 .HasOne(ur => ur.User)
