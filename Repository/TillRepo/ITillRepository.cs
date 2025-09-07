@@ -7,8 +7,9 @@ namespace Ultimate_POS_Api.Repository.TillRepo
     {
         Task<ResponseStatus> AddTill(AddTillDto addTill);
         Task<ResponseStatus> OpenTillAsync(OpenTillDto openTillDto);
-        //Task<ResponseStatus> UpdateTill(UpdateTillDto updateTill);
-        //Task<ResponseStatus> DeleteTill(Guid tillId);
+        Task<IEnumerable<GetTillDto>> GetTillAsync();
+        Task<ResponseStatus> UpdateTillAsync(UpdateTillDto updateTillDto);
+        Task<ResponseStatus> DeleteTillAsync(int tillId);
         //Task<GetTillDto> GetTill(Guid tillId);
     }
 }

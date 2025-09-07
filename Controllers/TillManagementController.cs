@@ -29,17 +29,46 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("UpdateTill")]
         public async Task<ActionResult> UpdateTill()
         {
-            return Ok();
+            try
+            {
+                var response = await _tillRepository.UpdateTillAsync(new UpdateTillDto());
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
-        public async Task<ActionResult> DeleteTill()
+        [HttpDelete("DeleteTill/{TillId}")]
+        public async Task<ActionResult> DeleteTill(int TillId)
         {
-            return Ok();
+            try
+            {
+                var response = await _tillRepository.DeleteTillAsync(TillId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
+        [HttpPost("GetTill")]
         public async Task<ActionResult> GetTill()
         {
-            return Ok();
+            try
+            {
+                var response = await _tillRepository.GetTillAsync();
+                return Ok(response);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+            
         }
         public async Task<ActionResult> AssignTill()
         {

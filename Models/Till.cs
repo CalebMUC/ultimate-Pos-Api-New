@@ -38,6 +38,9 @@ namespace Ultimate_POS_Api.Models
         public string? SupervisedBy { get; set; }
         public DateTime? SupervisedOn { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
+
         // Navigation property (Cashier / User operating this till)
         public User? User { get; set; }
     }
