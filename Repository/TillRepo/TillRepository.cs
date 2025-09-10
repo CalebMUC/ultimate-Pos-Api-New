@@ -16,40 +16,46 @@ namespace Ultimate_POS_Api.Repository.TillRepo
             _logger = logger;
         }
 
-        public async Task<IEnumerable<GetTillDto>> GetTillAsync() {
+        public async Task<IEnumerable<GetTillDto>> GetTillAsync()
+        {
             try
             {
-                var response = await _dbContext.tills.Select(t => new GetTillDto
-                {
-                    TillId = t.TillId,
-                    Name = t.Name,
-                    UserId = t.UserId,
-                    Description = t.Description,
-                    Status = t.Status,
-                    OpeningAmount = t.OpeningAmount,
-                    CurrentAmount = t.CurrentAmount,
-                    ExpectedAmount = t.ExpectedAmount,
-                    CreatedAt = t.CreatedAt,
-                    CreatedBy = t.CreatedBy,
-                    OpenedAt = t.OpenedAt,
-                    OpenedBy = t.OpenedBy,
-                    ClosingAmount = t.ClosingAmount,
-                    UpdatedAt = t.UpdatedAt,
-                    UpdatedBy = t.UpdatedBy,
-                    SupervisedBy = t.SupervisedBy,
-                    SupervisedOn = t.SupervisedOn,
-                    Variance = t.Variance
-
-                }).ToListAsync();
+                var response = await (
+                    from t in _dbContext.tills
+                    join u in _dbContext.Users on t.UserId equals u.UserId
+                    select new GetTillDto
+                    {
+                        TillId = t.TillId,
+                        Name = t.Name,
+                        UserId = t.UserId,
+                        CashierName = u.UserName, // 🟢 Add cashier username
+                        Description = t.Description,
+                        Status = t.Status,
+                        OpeningAmount = t.OpeningAmount,
+                        CurrentAmount = t.CurrentAmount,
+                        ExpectedAmount = t.ExpectedAmount,
+                        CreatedAt = t.CreatedAt,
+                        CreatedBy = t.CreatedBy,
+                        OpenedAt = t.OpenedAt,
+                        OpenedBy = t.OpenedBy,
+                        ClosingAmount = t.ClosingAmount,
+                        UpdatedAt = t.UpdatedAt,
+                        UpdatedBy = t.UpdatedBy,
+                        SupervisedBy = t.SupervisedBy,
+                        SupervisedOn = t.SupervisedOn,
+                        Variance = t.Variance
+                    }
+                ).ToListAsync();
 
                 return response;
             }
-            catch (Exception ex) { 
-                _logger.LogError("Error Fetching Tills", ex);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error Fetching Tills");
                 return new List<GetTillDto>();
-
             }
         }
+
 
         public async Task<ResponseStatus> AddTill(AddTillDto addTill)
         {
@@ -62,6 +68,7 @@ namespace Ultimate_POS_Api.Repository.TillRepo
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = addTill.CreatedBy,
                     Status = "New",   // Or "Created"
+                    UserId = addTill.UserId
                 };
 
                 _dbContext.tills.Add(newTill);

@@ -6,7 +6,7 @@
         public decimal OpeningAmount { get; set; }
 
         public decimal ExpectedAmount { get; set; }
-
+        public string Notes { get; set; } = string.Empty;
         public string OpenedBy { get; set; } = string.Empty;
     }
 }

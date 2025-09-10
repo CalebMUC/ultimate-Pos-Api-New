@@ -4,6 +4,8 @@ using Ultimate_POS_Api.Repository.TillRepo;
 
 namespace Ultimate_POS_Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TillManagementController : ControllerBase
     {
         private readonly ITillRepository _tillRepository;
@@ -137,7 +139,7 @@ namespace Ultimate_POS_Api.Controllers
         [HttpPost("Close-Till")]
         public async Task<ActionResult> CloseTill(CloseTillDto closeTillDto)
         {
-            try {
+            try {   
                 var response = await _tillRepository.CloseTillAsync(closeTillDto);
                 return Ok(response);
             }

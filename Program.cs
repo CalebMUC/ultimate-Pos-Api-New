@@ -13,6 +13,8 @@ using Ultimate_POS_Api.Repository;
 using Ultimate_POS_Api.Repository.Authentication;
 using Ultimate_POS_Api.DTOS;
 using Ultimate_POS_Api.Services.JasperServices;
+using Microsoft.AspNetCore.Authorization;
+using Ultimate_POS_Api.Helper.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,11 @@ builder.Services.AddScoped<IMpesaRepository, MpesaRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddHttpClient<IJasperService, JasperService>();
+
+
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
 
 
 builder.Services.Configure<JasperServiceDto>(builder.Configuration.GetSection("JasperService"));

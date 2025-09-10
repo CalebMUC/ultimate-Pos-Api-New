@@ -205,9 +205,12 @@ public class AuthenticationRepository : IAuthenticationRepository
     {
         try
         {
-            // 1. Find user by email
+            // 1. Find user by email, include Role + RolePermissions + Permission
             var user = await _dbContext.Users
-                                       .FirstOrDefaultAsync(u => u.Email == userInfo.Email);
+                .Include(u => u.Role)
+                    .ThenInclude(r => r.Permissions)
+                        .ThenInclude(rp => rp.Permission)
+                .FirstOrDefaultAsync(u => u.Email == userInfo.Email);
 
             if (user == null)
             {
@@ -233,11 +236,10 @@ public class AuthenticationRepository : IAuthenticationRepository
                 };
             }
 
-            // 3. Generate JWT
+            // 3. Generate JWT with role + permissions
             string token = GenerateJwtToken(user);
 
-
-            // 4. Create new session record
+            // 4. Create session
             var session = new UserSession
             {
                 UserId = user.UserId,
@@ -265,6 +267,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             throw new Exception("An error occurred during login: " + ex.Message);
         }
     }
+
 
     public async Task<LoginResponseStatus> Logout(Guid userId, Guid sessionId)
     {
@@ -482,28 +485,32 @@ public class AuthenticationRepository : IAuthenticationRepository
 
     public string GenerateJwtToken(User user)
     {
-        //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        // 🔹 Collect permissions for user’s role
+        var permissions = user.Role?.Permissions?
+            .Select(rp => rp.Permission.PermissionName)
+            .ToList() ?? new List<string>();
+
+        // 🔹 Security key
         var keyBytes = Convert.FromBase64String(_jwtSettings.Key);
         var key = new SymmetricSecurityKey(keyBytes);
-
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        // var claims = new[]
-        // {
-        //     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-        //     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-        //     new Claim(ClaimTypes.Role, user.RoleId.ToString())
-        // };
+        // 🔹 Base claims
+        var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+        new Claim(ClaimTypes.Role, user.Role.RoleName) // ✅ store role name
+    };
 
-        var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, user.UserName), // Better than JwtRegisteredClaimNames.Sub
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Role, user.RoleId.ToString())
-                };
+        // 🔹 Add permission claims
+        foreach (var perm in permissions)
+        {
+            claims.Add(new Claim("permissions", perm));
+        }
 
+        // 🔹 Build token
         var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
@@ -514,6 +521,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 
     public string HashPassword(string password, out byte[] salt)
     {

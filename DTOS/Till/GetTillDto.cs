@@ -6,6 +6,7 @@ namespace Ultimate_POS_Api.DTOS.Till
     {
         public int TillId { get; set; }
         public string? Name { get; set; }
+        public string? CashierName { get; set; }
         public Guid? UserId { get; set; }
         public string? Description { get; set; }
         public decimal? OpeningAmount { get; set; }
