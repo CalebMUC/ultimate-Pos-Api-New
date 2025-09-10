@@ -5,27 +5,29 @@ namespace Ultimate_POS_Api.DTOS
 {
     public class ProductDTOs
     {
-        // public Guid ProductID { get; set; } 
-        [Required]
         public string ProductName { get; set; } = string.Empty;
-
-        [Required]
         public string ProductDescription { get; set; } = string.Empty;
-
-        public string? unit { get; set; }
-
+        public string? SKU { get; set; }
+        public string? Barcode { get; set; }
+        public string Unit { get; set; } = string.Empty;
         public int? Weight_Volume { get; set; }
 
-        [Required]
         public Guid CategoryID { get; set; }
+        public Guid SupplierId { get; set; }
 
         public decimal BuyingPrice { get; set; }
-
         public decimal SellingPrice { get; set; }
+        public decimal? DiscountPrice { get; set; }
 
         public int Quantity { get; set; }
+        public int ReorderLevel { get; set; }
 
-        public Guid Supplier { get; set; }
+        public bool Status { get; set; }
+
+        public string? Brand { get; set; }
+
+
+        public string CreatedBy { get; set; } = string.Empty;
 
     }
 

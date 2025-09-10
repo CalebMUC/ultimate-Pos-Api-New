@@ -24,11 +24,11 @@ namespace Ultimate_POS_Api.Controllers
 
         [HttpPost("AddProducts")]
         [Authorize]
-        public async Task<ActionResult> AddProducts(ProductDTOs products)
+        public async Task<ActionResult> AddProducts(ProductDTOs product)
         {
             try
             {
-                var response = await _product.AddProducts(products);
+                var response = await _product.AddProducts(product);
                 return Ok(response);
             }
             catch (Exception ex)

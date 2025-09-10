@@ -283,12 +283,20 @@ namespace Ultimate_POS_Api.Repository
                BuyingPrice = dto.BuyingPrice,
                SellingPrice = dto.SellingPrice,
                Quantity = dto.Quantity, 
-               SupplierId = dto.Supplier,
+               SupplierId = dto.SupplierId,
                CreatedOn = DateTime.UtcNow,
                UpdatedOn = DateTime.UtcNow,
                CreatedBy = userId,
                UpdatedBy = "",
-               Status = true
+               Status = true,
+                IsDeleted = false,
+                Barcode = dto.Barcode,
+                SKU = dto.SKU,
+                Unit = dto.Unit,
+                DiscountPrice = dto.DiscountPrice,
+                ReorderLevel = dto.ReorderLevel,
+
+
             };
 
             _dbContext.Products.Add(newProduct);
