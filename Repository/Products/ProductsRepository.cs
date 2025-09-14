@@ -57,7 +57,12 @@ namespace Ultimate_POS_Api.Repository
                UpdatedOn = pc.p.UpdatedOn,
                CreatedBy = pc.p.CreatedBy,
                UpdatedBy = pc.p.UpdatedBy,
-               Status = pc.p.Status
+               Status= pc.p.Status,
+               SKU = pc.p.SKU,
+               Barcode = pc.p.Barcode,
+               ReorderLevel = pc.p.ReorderLevel,
+               Unit = pc.p.Unit,
+               //Brand = pc.p.Brand
            })
        .ToListAsync();
 
@@ -295,6 +300,7 @@ namespace Ultimate_POS_Api.Repository
                 Unit = dto.Unit,
                 DiscountPrice = dto.DiscountPrice,
                 ReorderLevel = dto.ReorderLevel,
+                brand = dto.Brand
 
 
             };

@@ -7,7 +7,7 @@ namespace Ultimate_POS_Api.DTOS
     public class TransactionDto
     {
         // public Guid TransactionID { get; set; } 
-        public Guid UserID { get; set; }
+        //public Guid UserID { get; set; }
         public decimal TotalValueAddedTax { get; set; }
         public decimal TotalCost { get; set; } = 0;
         public decimal TotalDiscount { get; set; } = 0;

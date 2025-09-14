@@ -60,10 +60,10 @@ namespace Ultimate_POS_Api.Repository
 
                 // ✅ Ensure cashier has active till
                 var till = await _dbContext.tills
-                    .FirstOrDefaultAsync(t => t.UserId == userId && t.Status == "Active");
+                    .FirstOrDefaultAsync(t => t.UserId == userId && t.Status == "Open");
 
                 if (till == null)
-                    return new ResponseStatus { Status = 400, StatusMessage = "No active till found for cashier" };
+                    return new ResponseStatus { Status = 400, StatusMessage = $"Till is not open for {cashierName}" };
 
                 // ✅ Process each transaction
                 foreach (var dto in salesDto.transaction)
@@ -104,7 +104,8 @@ namespace Ultimate_POS_Api.Repository
                         NetAmount = dto.TotalCost - dto.TotalDiscount + dto.TotalValueAddedTax,
                         TransactionDate = DateTime.UtcNow,
                         Cashier = cashierName,
-                        TillId = till.TillId
+                        TillId = till.TillId,
+                        UserID = userId
                     };
 
                     _dbContext.Transactions.Add(transaction);
@@ -149,6 +150,7 @@ namespace Ultimate_POS_Api.Repository
                         {
                             TransactionId = transaction.TransactionId,
                             PaymentMethodId = payment.PaymentMethodId,
+                            Name = "Cash",
                             Status = PaymentStatus.Completed,
                             PaymentReference = payment.PaymentReference,
                             Amount = payment.Amount

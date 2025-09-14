@@ -49,6 +49,9 @@ public class Products
     public bool Status { get; set; }
     public bool IsDeleted { get; set; } = false;
 
+    public string? brand { get; set; }
+
+
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedOn { get; set; } = DateTime.UtcNow;
 

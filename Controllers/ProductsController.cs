@@ -54,7 +54,7 @@ namespace Ultimate_POS_Api.Controllers
 
         [HttpPost("GetProducts")]
         [Authorize]
-        [Authorize(Policy ="PERMISSION:can_view_product")]
+        //[Authorize(Policy ="PERMISSION:can_view_product")]
         public async Task<ActionResult> GetProducts()
         {
             try

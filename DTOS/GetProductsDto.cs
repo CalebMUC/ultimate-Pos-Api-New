@@ -13,6 +13,16 @@ namespace Ultimate_POS_Api.DTOS
         public int? Weight_Volume { get; set; }
         public Guid CategoryID { get; set; }
 
+        public string? SKU { get; set; }
+        public string? Barcode { get; set; }
+        public string Unit { get; set; } = string.Empty;
+
+        public int ReorderLevel { get; set; }
+
+        public bool Status { get; set; }
+
+        public string? Brand { get; set; }
+
         public decimal BuyingPrice { get; set; }
 
         public decimal SellingPrice { get; set; }
@@ -27,7 +37,6 @@ namespace Ultimate_POS_Api.DTOS
         public string? UpdatedBy { get; set; }
 
         public Guid SupplierId { get; set; }  // This is the foreign key
-        public bool Status { get; set; }
         public string SupplierName { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
     }

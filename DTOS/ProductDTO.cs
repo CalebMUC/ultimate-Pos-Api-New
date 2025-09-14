@@ -19,10 +19,11 @@ namespace Ultimate_POS_Api.DTOS
         public decimal SellingPrice { get; set; }
         public decimal? DiscountPrice { get; set; }
 
+        public bool Status { get; set; }
+
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
 
-        public bool Status { get; set; }
 
         public string? Brand { get; set; }
 
