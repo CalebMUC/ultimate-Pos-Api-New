@@ -8,7 +8,7 @@ namespace Ultimate_POS_Api.Models
         [Required]
         public Guid expenseId { get; set; }
         public Guid expenseCategoryId { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public DateTime ExpenseDate { get; set; }

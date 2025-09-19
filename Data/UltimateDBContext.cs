@@ -35,6 +35,10 @@ namespace Ultimate_POS_Api.Data
 
         public DbSet<AccountTrxSettlement> AccountTrxSettlement { get; set; }
 
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<ExpenseCategory> expensecategories { get; set; }
+        
+
 
         public DbSet<Logs> Logs { get; set; }
 

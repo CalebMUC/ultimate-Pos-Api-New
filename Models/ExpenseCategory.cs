@@ -6,14 +6,14 @@ namespace Ultimate_POS_Api.Models
     {
         [Key]
         [Required]
-        public Guid expenseCategoryId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool isActive { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string UpdatedBy { get; set; }
-        public DateTime UpdatedOn { get; set; }
+        public Guid expensecategoryid { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public bool isactive { get; set; }
+        public string createdby { get; set; }
+        public DateTime createdon { get; set; }
+        public string? updatedby { get; set; }
+        public DateTime? updatedon { get; set; }
 
     }
 }

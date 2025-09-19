@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using Newtonsoft.Json;
 using DocumentFormat.OpenXml.Bibliography;
+using Ultimate_POS_Api.DTOS.Transactions;
 
 namespace Ultimate_POS_Api.Repository
 {
@@ -38,9 +39,21 @@ namespace Ultimate_POS_Api.Repository
         }
 
 
-        public async Task<IEnumerable<Transactions>> GetTransactions()
+        public async Task<IEnumerable<GetTransactionsDto>> GetTransactions()
         {
-            var response = await _dbContext.Transactions.ToListAsync();
+            var response = await _dbContext.Transactions.Select(t=> new GetTransactionsDto {
+                TransactionId = t.TransactionId,
+                InvoiceNumber = t.InvoiceNumber,
+                TotalAmount = t.TotalAmount,
+                Discount = t.Discount,
+                Tax = t.Tax,
+                NetAmount = t.NetAmount,
+                TransactionDate = t.TransactionDate,
+                Cashier = t.Cashier,
+                TillName = _dbContext.tills.Where(till => till.TillId == t.TillId).Select(till => till.Name).FirstOrDefault()
+
+            })
+                .ToListAsync();
             return response;
         }
 

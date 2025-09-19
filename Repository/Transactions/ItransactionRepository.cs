@@ -1,4 +1,5 @@
 using Ultimate_POS_Api.DTOS;
+using Ultimate_POS_Api.DTOS.Transactions;
 using Ultimate_POS_Api.Models;
 
 namespace Ultimate_POS_Api.Repository
@@ -7,7 +8,7 @@ namespace Ultimate_POS_Api.Repository
     {
         // public Task<IEnumerable<Categories>> GetCategory();
 
-         public Task<IEnumerable<Transactions>> GetTransactions();
+         public Task<IEnumerable<GetTransactionsDto>> GetTransactions();
 
         public Task<ResponseStatus> AddSale(TransactionListDto JsonData);
 
