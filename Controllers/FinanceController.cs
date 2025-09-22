@@ -11,6 +11,22 @@ namespace Ultimate_POS_Api.Controllers
         {
             _financeRepo = financeRepo;
         }
+
+        [HttpPost("GetExpenseCategory")]
+        public async Task<IActionResult> AddExpenseCategory()
+        {
+            try
+            {
+               
+                var response = await _financeRepo.GetExpenseCategoryAsync();
+                // Logic to add expense category goes here
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost("AddExpenseCategory")]
         public async Task<IActionResult> AddExpenseCategory([FromBody] ExpenseCategoryDto dto)
         {
@@ -21,6 +37,25 @@ namespace Ultimate_POS_Api.Controllers
                     return BadRequest("No DATA");
                 }
                 var response = await _financeRepo.AddExpenseCategoryAsync(dto);
+                // Logic to add expense category goes here
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("EditExpenseCategory")]
+        public async Task<IActionResult> EditExpenseCategory([FromBody] EditExpenseCategoryDto dto)
+        {
+            try
+            {
+                if (dto == null)
+                {
+                    return BadRequest("No DATA");
+                }
+                var response = await _financeRepo.EditExpenseCategoryAsync(dto);
                 // Logic to add expense category goes here
                 return Ok(response);
             }
