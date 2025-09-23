@@ -11,9 +11,9 @@ namespace Ultimate_POS_Api.Repository.Finance
         public Task<ResponseStatus> EditExpenseCategoryAsync(EditExpenseCategoryDto dto);
         public Task<ResponseStatus> DeleteExpenseCategoryAsync(Guid expenseId);
         //Expense
-        //public Task<IEnumerable<GetExpensesDto>> GetExpensesAsync();
+        public Task<IEnumerable<GetExpensesDto>> GetExpensesAsync();
         public Task<ResponseStatus> AddExpenseAsync(ExpenseDto dto);
-    //    public Task<ResponseStatus> EditExpenseAsync(EditExpenseDto dto);
-    //    public Task<ResponseStatus> DeleteExpenseAsync(Guid expenseId);
+        public Task<ResponseStatus> EditExpenseAsync(EditExpenseDto dto);
+        public Task<ResponseStatus> DeleteExpenseAsync(Guid expenseId);
     }
 }

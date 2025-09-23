@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -109,5 +109,7 @@ namespace Ultimate_POS_Api.Models
         // Product details
         [JsonIgnore]
         public ICollection<Products> Products { get; set; }
+        // 🔹 Navigation property (one supplier can have many purchase orders)
+        public ICollection<PurchaseOrders> PurchaseOrders { get; set; } = new List<PurchaseOrders>();
     }
 }

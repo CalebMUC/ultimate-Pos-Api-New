@@ -64,5 +64,50 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        //--------------------------------------------------------------------------
+        //Expenses
+        // --------------------------------------------------------------------------
+        [HttpPost("GetExpenses")]
+        public async Task<IActionResult> GetExpenses()
+        {
+            try
+            {
+                var response = await _financeRepo.GetExpensesAsync();
+                // Logic to add expense category goes here
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("AddExpense")]
+        public async Task<IActionResult> AddExpense(ExpenseDto dto)
+        {
+            try { 
+                var response = await _financeRepo.AddExpenseAsync(dto);
+
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("EditExpense")]
+        public async Task<IActionResult> EditExpense(ExpenseDto dto)
+        {
+            try
+            {
+                var response = await _financeRepo.AddExpenseAsync(dto);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

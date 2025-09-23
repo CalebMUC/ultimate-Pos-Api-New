@@ -62,4 +62,6 @@ public class Products
     public string? UpdatedBy { get; set; }
 
     public ICollection<Catalogue> Catalogues { get; set; }
+    // 🔹 Navigation property
+    public ICollection<PurchaseOrderItems> PurchaseOrderItems { get; set; } = new List<PurchaseOrderItems>();
 }

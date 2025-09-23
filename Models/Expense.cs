@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ultimate_POS_Api.Models
 {
@@ -7,6 +8,8 @@ namespace Ultimate_POS_Api.Models
         [Key]
         [Required]
         public Guid expenseId { get; set; }
+        [Required]
+        [ForeignKey("expenseCategory")]
         public Guid expenseCategoryId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,5 +21,10 @@ namespace Ultimate_POS_Api.Models
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
         public string ReferenceNo { get; set; }
+
+        //navigation property
+        public ExpenseCategory expenseCategory { get; set; }
+
+
     }
 }

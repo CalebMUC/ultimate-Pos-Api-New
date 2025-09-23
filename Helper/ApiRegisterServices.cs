@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Ultimate_POS_Api.Repository.Authentication;
 using Ultimate_POS_Api.Repository.TillRepo;
 using Ultimate_POS_Api.Repository.Finance;
+using Ultimate_POS_Api.Repository.Purchases;
+using Ultimate_POS_Api.Repository.Invoices;
 
 namespace Ultimate_POS_Api.Helper
 {
@@ -40,6 +42,9 @@ namespace Ultimate_POS_Api.Helper
             services.AddScoped<ICommonRepository, CommonRepository>();
             services.AddScoped<ITillRepository, TillRepository>();
             services.AddScoped<IFinanceRepo, FinanceRepo>();
+            services.AddScoped<IPurchaseRepo,PurchasesRepo>();
+            services.AddScoped<iInvoiceRepo, InvoiceRepo>();
+
 
 
             services.AddScoped<DocumentService>();

@@ -33,6 +33,9 @@ namespace Ultimate_POS_Api.Data
         public DbSet<BusinessDetail> BusinessDetail { get; set; }
         public DbSet<Accounts> Accounts { get; set; }
 
+        public DbSet<PurchaseOrders> PurchaseOrders { get; set; }
+        public DbSet<PurchaseOrderItems> PurchaseOrderItems { get; set; }
+
         public DbSet<AccountTrxSettlement> AccountTrxSettlement { get; set; }
 
         public DbSet<Expense> Expenses { get; set; }
@@ -128,6 +131,28 @@ namespace Ultimate_POS_Api.Data
             .HasOne(c => c.Products)
             .WithMany(p => p.Catalogues)
             .HasForeignKey(c => c.ProductId);
+
+            // 🔹 One-to-many: PurchaseOrders -> PurchaseOrderItems
+            modelBuilder.Entity<PurchaseOrders>()
+                .HasMany(p => p.Items)
+                .WithOne(i => i.PurchaseOrder)
+                .HasForeignKey(i => i.PurchaseOrderId)
+                .OnDelete(DeleteBehavior.Cascade); // delete items if order is deleted
+
+            // One Supplier → Many PurchaseOrders
+            modelBuilder.Entity<PurchaseOrders>()
+                .HasOne(p => p.Supplier)
+                .WithMany(s => s.PurchaseOrders)
+                .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Product -> PurchaseOrderItems
+            modelBuilder.Entity<PurchaseOrderItems>()
+                .HasOne(i => i.Product)
+                .WithMany(p => p.PurchaseOrderItems)
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
 
             base.OnModelCreating(modelBuilder);
