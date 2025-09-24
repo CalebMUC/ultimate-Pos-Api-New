@@ -40,7 +40,8 @@ namespace Ultimate_POS_Api.Data
 
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseCategory> expensecategories { get; set; }
-        
+        public DbSet<PurchaseInvoices> PurchaseInvoices { get; set; }
+
 
 
         public DbSet<Logs> Logs { get; set; }
@@ -152,6 +153,13 @@ namespace Ultimate_POS_Api.Data
                 .WithMany(p => p.PurchaseOrderItems)
                 .HasForeignKey(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // 🔹 Relationship: One PurchaseOrder has many PurchaseInvoices
+            modelBuilder.Entity<PurchaseInvoices>()
+                .HasOne(pi => pi.PurchaseOrder)
+                .WithMany(po => po.Invoices)
+                .HasForeignKey(pi => pi.PurchaseOrderId)
+                .OnDelete(DeleteBehavior.Cascade); // If order deleted, delete invoices
 
 
 

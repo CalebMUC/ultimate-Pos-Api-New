@@ -150,6 +150,102 @@ namespace Ultimate_POS_Api.Repository.Purchases
             }).ToList();
         }
 
+
+        public async Task<ResponseStatus> EditPurchaseOrderAsync(EditPurchaseOrder dto)
+        {
+            try
+            {
+                var order = await _dbContext.PurchaseOrders
+                    .Include(po => po.Items)
+                    .FirstOrDefaultAsync(po => po.PurchaseOrderId == dto.PurchaseOrderId && po.IsActive);
+
+                if (order == null)
+                {
+                    return new ResponseStatus { Status = 404, StatusMessage = "Purchase order not found." };
+                }
+
+                // 🔹 Update order header
+                UpdateOrderFromDto(order, dto);
+
+                // 🔹 Handle items
+                UpdateOrderItemsFromDto(order, dto.Items, dto.UpdatedBy);
+
+                await _dbContext.SaveChangesAsync();
+
+                return new ResponseStatus
+                {
+                    Status = 200,
+                    StatusMessage = "Purchase order updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while editing purchase order");
+                return new ResponseStatus { Status = 500, StatusMessage = "An error occurred while editing the purchase order." };
+            }
+        }
+
+        public void UpdateOrderFromDto(PurchaseOrders order, EditPurchaseOrder dto)
+        {
+            order.OrderNumber = dto.OrderNumber ?? order.OrderNumber;
+            order.SupplierId = dto.SupplierId != Guid.Empty ? dto.SupplierId : order.SupplierId;
+            order.OrderDate = dto.OrderDate != default ? dto.OrderDate : order.OrderDate;
+            order.DeliveryDate = dto.DeliveryDate != default ? dto.DeliveryDate : order.DeliveryDate;
+            order.TotalAmount = dto.TotalAmount > 0 ? dto.TotalAmount : order.TotalAmount;
+            order.Status = dto.Status ?? order.Status;
+            order.UpdatedOn = DateTime.UtcNow;
+            order.UpdatedBy = dto.UpdatedBy ?? order.UpdatedBy;
+            order.Notes = dto.Notes ?? order.Notes;
+        }
+
+        private void UpdateOrderItemsFromDto(PurchaseOrders order, List<EditPurchaseOrderItem> dtoItems, string? updatedBy)
+        {
+            // Existing item IDs
+            var existingItemIds = order.Items.Select(i => i.PurchaseOrderItemId).ToList();
+            var dtoItemIds = dtoItems.Where(i => i.PurchaseOrderItemId.HasValue).Select(i => i.PurchaseOrderItemId.Value).ToList();
+
+            // 🔹 1. Update existing items
+            foreach (var existing in order.Items.Where(i => dtoItemIds.Contains(i.PurchaseOrderItemId)))
+            {
+                var dtoItem = dtoItems.First(i => i.PurchaseOrderItemId == existing.PurchaseOrderItemId);
+                existing.ProductId = dtoItem.ProductId;
+                existing.Quantity = dtoItem.Quantity;
+                existing.UnitPrice = dtoItem.UnitPrice;
+                existing.TotalPrice = dtoItem.TotalPrice > 0 ? dtoItem.TotalPrice : dtoItem.Quantity * dtoItem.UnitPrice;
+                existing.IsActive = dtoItem.IsActive;
+                existing.UpdatedOn = DateTime.UtcNow;
+                existing.UpdatedBy = updatedBy ?? existing.UpdatedBy;
+            }
+
+            // 🔹 2. Add new items (no ID in DTO)
+            foreach (var dtoItem in dtoItems.Where(i => !i.PurchaseOrderItemId.HasValue))
+            {
+                order.Items.Add(new PurchaseOrderItems
+                {
+                    PurchaseOrderItemId = Guid.NewGuid(),
+                    PurchaseOrderId = order.PurchaseOrderId,
+                    ProductId = dtoItem.ProductId,
+                    Quantity = dtoItem.Quantity,
+                    UnitPrice = dtoItem.UnitPrice,
+                    TotalPrice = dtoItem.TotalPrice > 0 ? dtoItem.TotalPrice : dtoItem.Quantity * dtoItem.UnitPrice,
+                    IsActive = true,
+                    CreatedOn = DateTime.UtcNow,
+                    CreatedBy = updatedBy
+                });
+            }
+
+            // 🔹 3. Remove items missing from DTO (soft delete)
+            foreach (var toRemove in order.Items.Where(i => !dtoItemIds.Contains(i.PurchaseOrderItemId)).ToList())
+            {
+                toRemove.IsActive = false;
+                toRemove.UpdatedOn = DateTime.UtcNow;
+                toRemove.UpdatedBy = updatedBy ?? toRemove.UpdatedBy;
+            }
+
+            // 🔹 Update total amount
+            order.TotalAmount = order.Items.Where(i => i.IsActive).Sum(i => i.TotalPrice);
+        }
+
         public async Task<ResponseStatus> DeletePurchaseOrderAsync(Guid purchaseOrderId)
         {
             try

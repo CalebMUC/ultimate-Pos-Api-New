@@ -44,5 +44,6 @@ namespace Ultimate_POS_Api.Models
         // 🔹 Navigation property
         public Supplier Supplier { get; set; }
         public ICollection<PurchaseOrderItems> Items { get; set; } = new List<PurchaseOrderItems>();
+        public ICollection<PurchaseInvoices> Invoices { get; set; } = new List<PurchaseInvoices>();
     }
 }

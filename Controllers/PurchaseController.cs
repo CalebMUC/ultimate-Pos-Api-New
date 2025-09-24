@@ -26,6 +26,7 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpPost("AddPurchaseOrder")]
         public async Task<IActionResult> AddPurchaseOrder([FromBody] DTOS.Purchases.AddPurchaseOrderDto dto)
         {
@@ -44,7 +45,44 @@ namespace Ultimate_POS_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+        [HttpPost("EditPurchaseOrder")]
+        public async Task<IActionResult> EditPurchaseOrder([FromBody] EditPurchaseOrder dto)
+        {
+            try
+            {
+                if (dto == null)
+                {
+                    return BadRequest("No DATA");
+                }
+                var response = await _purchaseRepo.EditPurchaseOrderAsync(dto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding a purchase order.");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeletePurchaseOrder")]
+        public async Task<IActionResult> DeletePurchaseOrder([FromQuery] Guid purchaseOrderId)
+        {
+            try
+            {
+                if (purchaseOrderId == Guid.Empty)
+                {
+                    return BadRequest("Invalid Purchase Order ID");
+                }
+                var response = await _purchaseRepo.DeletePurchaseOrderAsync(purchaseOrderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while deleting a purchase order.");
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
     }

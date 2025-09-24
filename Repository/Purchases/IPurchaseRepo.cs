@@ -8,7 +8,7 @@ namespace Ultimate_POS_Api.Repository.Purchases
         //public Task<GetPurchaseOrderItems> GetPurchaseOrderItemsAsync();
         public Task<List<GetPurchaseOrder>> GetAllPurchaseOrdersAsync();
         public Task<ResponseStatus> AddPurchaseOrderAsync(AddPurchaseOrderDto dto);
-        //public Task<ResponseStatus> EditPurchaseOrderAsync(EditPurchaseOrder dto);    
+        public Task<ResponseStatus> EditPurchaseOrderAsync(EditPurchaseOrder dto);    
         public Task<ResponseStatus> DeletePurchaseOrderAsync(Guid purchaseOrderId);
     }
 }
