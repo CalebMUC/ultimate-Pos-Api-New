@@ -15,6 +15,11 @@ namespace Ultimate_POS_Api.Models
         [ForeignKey(nameof(PurchaseOrderId))]
         public PurchaseOrders PurchaseOrder { get; set; }
 
+        public Guid SupplierId { get; set; }
+
+        [ForeignKey(nameof(SupplierId))]
+        public Supplier Supplier { get; set; }
+
         public string InvoiceNumber { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime DueDate { get; set; }

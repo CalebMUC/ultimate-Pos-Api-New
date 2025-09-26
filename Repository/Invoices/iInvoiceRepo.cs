@@ -12,6 +12,14 @@ namespace Ultimate_POS_Api.Repository.Invoices
 
         Task<List<GetPurchasesInvoice>> GetPurchaseInvoicesAsync();
 
+        //---------------Sales Invoices-----------------
+
+        Task<ResponseStatus> AddSalesInvoiceAsync(SalesInvoiceDto dto);
+        Task<ResponseStatus> EditSalesInvoiceAsync(EditSalesInvoiceDto dto);
+        Task<ResponseStatus> DeleteSalesInvoiceAsync(Guid salesInvoiceId);
+
+        Task<IEnumerable<GetSalesInvoiceDto>> GetSalesInvoicesAsync();
+
         //Task<PurchaseInvoices?> GetInvoiceByIdAsync(Guid invoiceId);
         //Task<IEnumerable<PurchaseInvoices>> GetInvoicesByPurchaseOrderAsync(Guid purchaseOrderId);
     }

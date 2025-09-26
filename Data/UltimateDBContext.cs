@@ -41,6 +41,9 @@ namespace Ultimate_POS_Api.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseCategory> expensecategories { get; set; }
         public DbSet<PurchaseInvoices> PurchaseInvoices { get; set; }
+        public DbSet<SalesInvoice> SalesInvoices { get; set; }
+        public DbSet<SalesInvoiceItem> SalesInvoiceItems { get; set; }
+
 
 
 
